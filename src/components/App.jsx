@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import List from './list/list';
+import List from './list/List';
 import Filter from './filter/Filter';
 import Form from './form/Form';
+import { Container, Title, SecondaryTitle } from './App.styled';
 class App extends Component {
   constructor() {
     super();
@@ -38,19 +39,21 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Phonebook</h1>
-        <Form onSubmit={this.addNewContact} />
-        <h2>Contacts</h2>
-        <Filter onChange={this.updateFilter} />
-        {this.state.contacts.length ? (
-          <List
-            contacts={this.state.contacts}
-            onClick={this.deleteContact}
-            filter={this.state.filter}
-          />
-        ) : (
-          <span>no added yet</span>
-        )}
+        <Container>
+          <Title>Phonebook</Title>
+          <Form onSubmit={this.addNewContact} />
+          <SecondaryTitle>Contacts</SecondaryTitle>
+          <Filter onChange={this.updateFilter} />
+          {this.state.contacts.length ? (
+            <List
+              contacts={this.state.contacts}
+              onClick={this.deleteContact}
+              filter={this.state.filter}
+            />
+          ) : (
+            <span>no added yet</span>
+          )}
+        </Container>
       </div>
     );
   }
