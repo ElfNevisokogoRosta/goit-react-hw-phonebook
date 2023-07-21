@@ -3,42 +3,29 @@ import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { FormContainer, InputLabel, Input, Btn } from './From.styled';
 export default class Form extends Component {
-  constructor(props) {
-    super(props);
-    this.onNameInput = this.onNameInput.bind(this);
-    this.onNumberInput = this.onNumberInput.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.state = {
-      contact: {},
-      id: nanoid(),
-      name: '',
-      number: '',
-    };
-  }
-  onNameInput(e) {
-    this.setState({
-      name: e.target.value,
-    });
-  }
-  onNumberInput(e) {
-    this.setState({
-      number: e.target.value,
-      contact: {
-        name: this.state.name,
-        number: this.state.number,
-        id: this.state.id,
-      },
-    });
-  }
-  onFormSubmit(e) {
+  state = {
+    name: '',
+    number: '',
+  };
+  onInputChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState(prevState => ({
+      [name]: value,
+    }));
+  };
+  onFormSubmit = e => {
     e.preventDefault();
+    const newContact = {
+      id: nanoid(),
+      name: this.state.name,
+      number: this.state.number,
+    }; //Для кращої читабельності
+    this.props.onSubmit(newContact);
     this.setState({
       name: '',
       number: '',
     });
-
-    this.props.onSubmit(this.state.contact);
-  }
+  };
   render() {
     return (
       <form onSubmit={this.onFormSubmit}>
@@ -46,7 +33,7 @@ export default class Form extends Component {
           <InputLabel>
             Name
             <Input
-              onChange={this.onNameInput}
+              onChange={this.onInputChange}
               value={this.state.name}
               type="text"
               name="name"
@@ -58,7 +45,7 @@ export default class Form extends Component {
           <InputLabel>
             Number
             <Input
-              onChange={this.onNumberInput}
+              onChange={this.onInputChange}
               value={this.state.number}
               type="tel"
               name="number"
